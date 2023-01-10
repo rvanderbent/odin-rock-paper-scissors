@@ -1,6 +1,8 @@
 
 let computerSelection = "";
 let playerSelection = "";
+let computerScore = 0;
+let playerScore = 0;
 
 // generate random choice
 function getComputerChoice() {
@@ -14,23 +16,17 @@ function getComputerChoice() {
     else return "scissors";
 }
 
-//console.log(getComputerChoice());
-computerSelection = getComputerChoice();
-
-
 // get user input
     // prompt user
     // remember case sensitivity
     // catch inappropriate input
 
-playerSelection = prompt("Rock, paper or scissors?").toLowerCase();
-console.log(playerSelection);
 
 function checkChoiceValidity(option) {
     if (option != "rock" && option != "paper" && option != "scissors") {
         return "Please enter a valid option";
     }
-    return "Great!";
+    return;
 }
 
 console.log(checkChoiceValidity(playerSelection));
@@ -62,22 +58,41 @@ function playRound(playerSelection, computerSelection) {
     return "Oops, something went wrong";
 }
 
+// display result
 function declareWinner(winner, loser) {
+    playerScore++;
     winner = winner.slice(0,1).toUpperCase() + winner.slice(1);
     return "You win! " + winner + " beats " + loser;
 }
 
 function declareLoser(loser, winner) {
+    computerScore++;
     winner = winner.slice(0,1).toUpperCase() + winner.slice(1);
     return "You lose! " + winner + " beats " + loser;
 }
 
-console.log(playRound(playerSelection, computerSelection));
 
-// display result
-// keep user score
-// keep computer score
+
 // play 5 rounds
-// compare scores
-// display winner or loser
+function game(){
+    for (let i=1; i < 6; i++){
+        console.log("Round " + i);
+        playerSelection = prompt("Rock, paper or scissors?").toLowerCase();
+        console.log(checkChoiceValidity(playerSelection));
+        console.log("You played " + playerSelection);
+
+        computerSelection = getComputerChoice();
+        console.log("The computer played " + computerSelection);
+        console.log(playRound(playerSelection, computerSelection));
+        console.log("Your score is " + playerScore);
+        console.log("The computer's score is " + computerScore);
+    }
+    if (playerScore > computerScore) {
+        return ("Congratulations! You beat the computer")
+    }
+    else return "Sorry, the computer won this game. Better luck next time";
+}
+
+console.log(game());
+
 
