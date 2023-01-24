@@ -3,6 +3,11 @@ let computerSelection = "";
 let playerSelection = "";
 let computerScore = 0;
 let playerScore = 0;
+let round = 1;
+const options = document.querySelectorAll("button.option");
+const result = document.querySelector("div#result");
+
+
 
 // generate random choice
 function getComputerChoice() {
@@ -34,6 +39,7 @@ console.log(checkChoiceValidity(playerSelection));
 // check if user input beats computer choice
 
 function playRound(playerSelection, computerSelection) {
+
     if (playerSelection === computerSelection) {
         return "It's a tie"
     }
@@ -71,28 +77,42 @@ function declareLoser(loser, winner) {
     return "You lose! " + winner + " beats " + loser;
 }
 
-
-
-// play 5 rounds
-function game(){
-    for (let i=1; i < 6; i++){
-        console.log("Round " + i);
-        playerSelection = prompt("Rock, paper or scissors?").toLowerCase();
-        console.log(checkChoiceValidity(playerSelection));
-        console.log("You played " + playerSelection);
-
-        computerSelection = getComputerChoice();
-        console.log("The computer played " + computerSelection);
-        console.log(playRound(playerSelection, computerSelection));
-        console.log("Your score is " + playerScore);
-        console.log("The computer's score is " + computerScore);
+function keepScore(){
+    if (playerScore >= 5){
+        again.style.display = "";
+        options.forEach(button => button.style.display = "none")
+        return "Congratulations! You beat the computer";
     }
-    if (playerScore > computerScore) {
-        return ("Congratulations! You beat the computer")
+    else if (computerScore >= 5){
+        again.style.display = "";
+        options.forEach(button => button.style.display = "none")
+        return "Sorry, the computer won this game. Better luck next time";
     }
-    else return "Sorry, the computer won this game. Better luck next time";
+    else return "";
 }
 
-console.log(game());
 
+options.forEach(button => button.addEventListener("click", function (){
+    result.innerHTML = "";
+    result.innerHTML = `<br><h3>Round ${round}</h3>`;
+    round ++;
+    let computerSelection = getComputerChoice();
+    result.innerHTML += `<br>You played ${button.id} `;
+    result.innerHTML += `<br>The computer played ${computerSelection}`;
+    result.innerHTML += "<br>" + playRound(button.id, computerSelection);
+    result.innerHTML += `<br><br>You: ${playerScore}`;
+    result.innerHTML += `<br>Computer: ${computerScore}`;
+    result.innerHTML += "<br><br>" + keepScore();
+}));
 
+const again = document.querySelector(".again");
+again.addEventListener("click", resetGame);
+
+function resetGame(){
+    result.innerHTML = "";
+    round = 1;
+    playerScore = 0;
+    computerScore = 0;
+    options.forEach(button => button.style.display = "")
+    again.style.display = "none";
+};
